@@ -44,7 +44,7 @@ async def update_comment(photo_id: int, comment_id: int, body: CommentUpdate, cu
     return await repository_comment.update_comment(comment, body.text, db)
 
 @router.delete('/{comment_id}', status_code=204)
-@roles_required(Role.ADMIN, Role.MODERATOR)
+@roles_required(Role.ADMIN, Role.MODERATOR, detail='Only moderators and administrators can delete comments')
 async def delete_comment(photo_id: int, comment_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(db_connect)):
     comment = await repository_comment.get_comment(photo_id, comment_id, db)
     if comment is None:

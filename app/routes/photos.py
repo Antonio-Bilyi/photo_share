@@ -121,7 +121,7 @@ async def get_qr_from_link(photo_id: int, link_id: int, current_user: User = Dep
     return Response(content=png, media_type='image/png')
 
 @router.get('/{photo_id}/links', response_model=list[PhotoLinkResponse])
-async def get_photo_links(photo_id: int, db: Session = Depends(db_connect)):
+async def get_photo_links(photo_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(db_connect)):
     photo = await repository_photos.get_photo(photo_id, db)
     if photo is None:
         raise HTTPException(
